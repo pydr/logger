@@ -2,6 +2,7 @@ package logger
 
 import (
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
 	"os"
 	"strings"
@@ -30,6 +31,17 @@ type (
 		Hook  *lumberjack.Logger
 	}
 )
+
+var Logger *zap.Logger
+var err error
+
+func init() {
+	Logger, err = New("./logs.json")
+	if err != nil {
+		fmt.Print("init logger failed: miss default config file 'logs.json' in current program root directory， or use New() to manual initialization")
+		os.Exit(1)
+	}
+}
 
 func TimeEncoder(t time.Time, enc zapcore.PrimitiveArrayEncoder) {
 	enc.AppendString(t.Format("2006-01-02 15:04:05.000"))
