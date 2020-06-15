@@ -38,7 +38,7 @@ var err error
 func init() {
 	Logger, err = New("./logs.json")
 	if err != nil {
-		fmt.Print("init logger failed: miss default config file 'logs.json' in current program root directory， or use New() to manual initialization")
+		fmt.Print("logger: invalid config file\n")
 		os.Exit(1)
 	}
 }
@@ -56,24 +56,15 @@ func New(configPath string) (*zap.Logger, error) {
 		AddCaller: true,
 		Color:     true,
 		FilesOut:  false,
-		LogsPath: []*logFilePath{{
-			Level: "error",
-			Hook: &lumberjack.Logger{
-				Filename:   "./logs/zlog.log", // Filename is the file to write logs to.
-				MaxSize:    1024,              // megabytes
-				MaxAge:     7,                 // days
-				MaxBackups: 3,                 // the maximum number of old log files to retain.
-			},
-		},
-		},
 	}
 
 	file, err := ioutil.ReadFile(configPath)
 	if err != nil {
-		return nil, err
-	}
-	if err := json.Unmarshal(file, &logcfg); err != nil {
-		return nil, err
+		fmt.Print("logger: there is no any config file, using default config\n")
+	} else {
+		if err := json.Unmarshal(file, &logcfg); err != nil {
+			return nil, err
+		}
 	}
 
 	// Output should also go to standard out.
