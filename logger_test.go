@@ -7,7 +7,7 @@ import (
 )
 
 func TestLogger(t *testing.T) {
-	logger, err := New("./logs.json")
+	logger, err := New("./logs.jsonss")
 	if err != nil {
 		t.Fatalf("init logger failed: %v", err)
 	}
