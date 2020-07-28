@@ -36,7 +36,7 @@ var Logger *zap.Logger
 var err error
 
 func init() {
-	Logger, err = New("./logs.json")
+	Logger, err = New("./conf/logs.json")
 	if err != nil {
 		fmt.Print("logger: invalid config file\n")
 		os.Exit(1)
